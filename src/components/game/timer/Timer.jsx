@@ -4,10 +4,10 @@ import { updateGame } from "../../../services/game";
 
 import './timer.css';
 
-const Timer = ({ gameId }) => {
+const Timer = ({ gameId, gameIsFinished }) => {
     const [minutes, setMinutes] = useState(0);
     const [secondes, setSecondes] = useState(0);
-
+    
     useEffect(() => {
         getGameInfos(gameId);
     }, [gameId]);
@@ -28,6 +28,7 @@ const Timer = ({ gameId }) => {
         }, 1000);
         updateTimeLocal();
         return () => clearInterval(timer);
+        
     }, [minutes, secondes]);
 
     const getGameInfos = async (gameId) => {

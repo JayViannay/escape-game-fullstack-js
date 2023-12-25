@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { getUsergameChallenge } from "../../services/challenge";
 import { getAllChallenge } from "../../services/challenge";
+import { finishGame } from "../../services/game";
 
-import ChallengeUl from "./challenges/ChallengeUl";
 import Header from "./layouts/Header";
+import ChallengeUl from "./challenges/ChallengeUl";
+import GameEnd from "./GameEnd";
 
 import './game.css';
 
@@ -17,6 +19,8 @@ const GameZone = ({ playerName }) => {
     const [indexOfCurrentChallenge, setIndexOfCurrentChallenge] = useState(0);
 
     const [showChallenge, setShowChallenge] = useState(0);
+    const [gameIsWin, setGameIsWin] = useState(false);
+    const [gameOver, setGameOver] = useState(false);
 
     useEffect(() => {
         const gameId = localStorage.getItem('gameId');
@@ -30,15 +34,15 @@ const GameZone = ({ playerName }) => {
     useEffect(() => {
         getChallenges();
         getUsergameChallenges(game, player);
-    }, [game, player]);
+    }, [game, player, showChallenge]);
 
     useEffect(() => {
         getCurrentChallenge();
-    }, [usergameChallenge]);
+    }, [usergameChallenge, showChallenge]);
 
     useEffect(() => {
         getIndexOfCurrentChallenge();
-    }, [currentChallenge]);
+    }, [currentChallenge, showChallenge]);
 
     const getChallenges = async () => {
         const challenges = await getAllChallenge();
@@ -52,23 +56,49 @@ const GameZone = ({ playerName }) => {
 
     const getCurrentChallenge = () => {
         const currentChallenge = usergameChallenge.filter(challenge => challenge.is_accomplished === 0)[0];
-        setCurrentChallenge(currentChallenge);
+        if (currentChallenge) {
+            setCurrentChallenge(currentChallenge);
+        } else handleFinishGame();
     };
 
     const getIndexOfCurrentChallenge = () => {
         const indexOfCurrentChallenge = challenges.findIndex(challenge => challenge.id === currentChallenge.challenge_id);
-        setIndexOfCurrentChallenge(indexOfCurrentChallenge);
+        if (indexOfCurrentChallenge) {
+            setIndexOfCurrentChallenge(indexOfCurrentChallenge);
+        }
+    };
+
+    const handleFinishGame = () => {
+        const isGameFinished = usergameChallenge.filter(challenge => challenge.is_accomplished === 1).length === 5;
+        const minutes = localStorage.getItem('minutes');
+        const secondes = localStorage.getItem('secondes');
+        if (isGameFinished && minutes !== 'undefined' && secondes !== 'undefined') {
+            if (minutes > 0 || secondes > 0) {
+                finishGame(game);
+                setGameIsWin(isGameFinished);
+            }
+        }
+        if (minutes === 0 && secondes === 0) {
+            setGameOver(true);
+        }
     };
 
     return (
         <section id="game_zone">
-            <Header playerName={playerName} player={player} game={game} />
-            <ChallengeUl 
-                challenges={challenges} 
-                usergameChallenge={usergameChallenge} 
-                indexOfCurrentChallenge={indexOfCurrentChallenge} 
-                setShowChallenge={setShowChallenge} 
-                showChallenge={showChallenge} />
+            {gameIsWin || gameOver ?
+                <GameEnd gameIsWin={gameIsWin} game={game} />
+                :
+                <div id="game_zone_on">
+                    <Header playerName={playerName} player={player} game={game} />
+                    <ChallengeUl
+                        challenges={challenges}
+                        usergameChallenge={usergameChallenge}
+                        indexOfCurrentChallenge={indexOfCurrentChallenge}
+                        setShowChallenge={setShowChallenge}
+                        showChallenge={showChallenge} />
+                </div>
+
+            }
         </section>
     );
 }

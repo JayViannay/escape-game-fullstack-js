@@ -11,10 +11,12 @@ const ChallengeLi = ({ challenges, challenge, index, indexOfCurrentChallenge, se
                 onClick={() => {
                     (indexOfCurrentChallenge === index || challenge.is_accomplished === 1) && setShowChallenge(challenge.challenge_id)  
                 }}
-            >{indexOfCurrentChallenge === index ? <span>>_</span> : <span>$ </span>}
+            >   {indexOfCurrentChallenge === index && <span>>_</span>}
+                {challenge.is_accomplished === 1 && <span className="txt-green">✔</span>}
                 {challenges[index].title}
                 {challenge.is_accomplished === 1 || indexOfCurrentChallenge === index ?
-                    <GiPadlockOpen /> : <GiPadlock />
+                    <span className="txt-green"><GiPadlockOpen /></span> 
+                    : <span className="txt-red"><GiPadlock /></span>
                 }
             </a>
         </li>

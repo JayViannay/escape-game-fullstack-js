@@ -2,6 +2,8 @@ import ChallengeLi from "./ChallengeLi";
 import ChallengeShow from "./ChallengeShow";
 import RestartGame from "../actions/RestartGame";
 
+import './challenge.css';
+
 const ChallengeUl = ({challenges, usergameChallenge, indexOfCurrentChallenge, setShowChallenge, showChallenge}) => {
     return (
         <>

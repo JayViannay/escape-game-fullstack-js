@@ -1,6 +1,8 @@
+import './restartGame.css';
+
 const RestartGame = () => {
     return (
-        <button id="game_restart" onClick={() => {
+        <button id="game_restart" className="btn-danger" onClick={() => {
             localStorage.clear();
             window.location.reload()
         }}>Restart Game</button>

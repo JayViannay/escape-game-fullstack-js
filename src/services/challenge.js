@@ -14,3 +14,8 @@ export const getChallengeById = async (id) => {
     const response = await api.get(`/games/challenges/${id}`);
     return response.data;
 }
+
+export const finishChallenge = async (data) => {
+    const response = await api.put(`/games/challenges/`, data);
+    return response.data;
+};

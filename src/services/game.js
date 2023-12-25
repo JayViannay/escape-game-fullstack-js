@@ -14,3 +14,8 @@ export const updateGame = async (id, minutes, secondes) => {
     const response = await api.put(`/games/edit/${id}`, { minutes, secondes });
     return response.data;
 };
+
+export const finishGame = async (id) => {
+    const response = await api.put(`/games/end/${id}`);
+    return response.data;
+};
