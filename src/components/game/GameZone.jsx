@@ -2,11 +2,8 @@ import { useEffect, useState } from "react";
 import { getUsergameChallenge } from "../../services/challenge";
 import { getAllChallenge } from "../../services/challenge";
 
-import ChallengeLine from "./challenges/ChallengeLine";
-import ChallengeShow from "./challenges/ChallengeShow";
+import ChallengeUl from "./challenges/ChallengeUl";
 import Header from "./layouts/Header";
-
-import RestartGame from "./actions/RestartGame";
 
 import './game.css';
 
@@ -64,28 +61,15 @@ const GameZone = ({ playerName }) => {
     };
 
     return (
-        <div id="game_zone">
+        <section id="game_zone">
             <Header playerName={playerName} player={player} game={game} />
-            {challenges.length > 0 ?
-                <ul>
-                    {usergameChallenge.map((challenge, index) => {
-                        return (
-                            <ChallengeLine 
-                                key={index} 
-                                challenges={challenges} 
-                                challenge={challenge} 
-                                index={index} 
-                                indexOfCurrentChallenge={indexOfCurrentChallenge} 
-                                setShowChallenge={setShowChallenge}
-                                />
-                        )
-                    })}
-                </ul>
-                : <p>...Loading...</p>
-            }
-            {showChallenge !== 0 && <ChallengeShow id={showChallenge} />}
-            <RestartGame />
-        </div>
+            <ChallengeUl 
+                challenges={challenges} 
+                usergameChallenge={usergameChallenge} 
+                indexOfCurrentChallenge={indexOfCurrentChallenge} 
+                setShowChallenge={setShowChallenge} 
+                showChallenge={showChallenge} />
+        </section>
     );
 }
 

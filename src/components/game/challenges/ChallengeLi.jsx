@@ -2,22 +2,23 @@
 import { GiPadlock } from "react-icons/gi";
 import { GiPadlockOpen } from "react-icons/gi";
 
-const ChallengeLine = ({ challenges, challenge, index, indexOfCurrentChallenge, setShowChallenge }) => {
+import './challenge.css';
+
+const ChallengeLi = ({ challenges, challenge, index, indexOfCurrentChallenge, setShowChallenge }) => {
     return (
-        <li key={index}>
-            {indexOfCurrentChallenge === index && <span>>_</span>}
+        <li key={index} className="challenge_list_li">
             <a href="#"
                 onClick={() => {
                     (indexOfCurrentChallenge === index || challenge.is_accomplished === 1) && setShowChallenge(challenge.challenge_id)  
                 }}
-            >$_ {challenges[index].title}
+            >{indexOfCurrentChallenge === index ? <span>>_</span> : <span>$ </span>}
+                {challenges[index].title}
                 {challenge.is_accomplished === 1 || indexOfCurrentChallenge === index ?
-                    <GiPadlockOpen />
-                    : <GiPadlock />
+                    <GiPadlockOpen /> : <GiPadlock />
                 }
             </a>
         </li>
     )
 };
 
-export default ChallengeLine;
+export default ChallengeLi;

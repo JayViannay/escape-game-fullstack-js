@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { getGame } from "../../services/game";
-import { updateGame } from "../../services/game";
+import { getGame } from "../../../services/game";
+import { updateGame } from "../../../services/game";
 
-import './game.css';
+import './timer.css';
 
 const Timer = ({ gameId }) => {
     const [minutes, setMinutes] = useState(0);

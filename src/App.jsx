@@ -7,11 +7,14 @@ import Home from './components/home/Home.jsx';
 import PlayerForm from './components/player/PlayerForm.jsx';
 import GameStart from './components/game/GameStart.jsx';
 import GameZone from './components/game/GameZone.jsx';
-import Timer from './components/game/Timer.jsx';
 
 import { getPlayerByUsername } from './services/player';
 import { newPlayer } from './services/player';
 import { newGame } from './services/game';
+
+import tabEffect from './assets/sounds/select-effect.mp3';
+import enterEffect from './assets/sounds/space-effect.mp3';
+import keyEffect from './assets/sounds/mouse-click-effect.mp3';
 
 const App = () => {
   const [ip, setIP] = useState('');
@@ -20,6 +23,10 @@ const App = () => {
   const [gameIsStarted, setGameIsStarted] = useState(false);
   const [playerId, setPlayerId] = useState(0);
   const [gameId, setGameId] = useState(0);
+
+  const tabSound = new Audio(tabEffect);
+  const enterSound = new Audio(enterEffect);
+  const keySound = new Audio(keyEffect);
 
   useEffect(() => {
     const playerIsSet = JSON.parse(localStorage.getItem('playerName'));
@@ -39,6 +46,27 @@ const App = () => {
 
   useEffect(() => {
     getIPClient();
+  }, []);
+
+  useEffect(() => {
+    const keyIsPressed = (event) => {
+      if (event.code === 'Enter') {
+        enterSound.play();
+      }
+      if (event.code === 'Tab') {
+        tabSound.play();
+      }
+      else {
+        keySound.play();
+      }
+    };
+    const mouseIsClicked = (event) => {
+      if (event.type === 'click') {
+        keySound.play();
+      }
+    };
+    document.addEventListener('keydown', keyIsPressed);
+    document.addEventListener('click', mouseIsClicked);
   }, []);
 
   const getIPClient = async () => {
@@ -79,8 +107,7 @@ const App = () => {
       {enterIsPressed === true && playerName === '' && <PlayerForm handleNewPlayer={handleNewPlayer} />}
       {enterIsPressed === true && playerName !== '' && gameIsStarted === false && <GameStart setGameIsStarted={setGameIsStarted} />}
       {/* GameZone */}
-      {enterIsPressed === true && playerId !== 0 && gameIsStarted === true && <Timer gameId={gameId} />}
-      {enterIsPressed === true && playerId !== 0 && gameIsStarted === true && <GameZone playerName={playerName}/>}
+      {enterIsPressed === true && playerId !== 0 && gameIsStarted === true && <GameZone playerName={playerName} />}
     </main>
   );
 }

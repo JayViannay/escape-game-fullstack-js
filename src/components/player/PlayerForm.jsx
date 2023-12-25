@@ -21,6 +21,7 @@ const PlayerForm = ({ handleNewPlayer }) => {
                         className="input"
                         value={value}
                         onChange={e => setValue(e.target.value)}
+                        autoFocus
                     />
                 </div>
             </form>
