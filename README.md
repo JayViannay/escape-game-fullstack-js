@@ -4,7 +4,7 @@ This is a React App Escape Game. The goal is to escape the room by resolving the
 
 ### Installation
 - Clone this repository
-- Install the Server : follow instructions in the [server repository]('./server-escape-game/README.md')
+- Install the Server : follow instructions in the server-escape-game/README.md's file
 - Open a terminal in the root folder of the project
 - Run `npm install`
 - Run `npm start`
