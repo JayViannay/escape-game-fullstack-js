@@ -1,4 +1,4 @@
-import './restartGame.css';
+import './restart_game.css';
 
 const RestartGame = () => {
     return (

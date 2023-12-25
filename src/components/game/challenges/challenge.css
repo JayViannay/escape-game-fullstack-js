@@ -11,10 +11,17 @@
     padding: 1em;
 }
 
-.challenge_list {
+#challenge_list {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+#challenge_list ul {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -43,4 +50,10 @@
     color: #000;
     font-size: 2em;
     text-decoration: underline;
+}
+
+#actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

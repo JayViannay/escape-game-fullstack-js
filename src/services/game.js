@@ -19,3 +19,8 @@ export const finishGame = async (id) => {
     const response = await api.put(`/games/end/${id}`);
     return response.data;
 };
+
+export const getClassmentGames = async () => {
+    const response = await api.get("/games/classment");
+    return response.data;
+};

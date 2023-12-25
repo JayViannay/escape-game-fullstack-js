@@ -8,7 +8,8 @@ const ChallengeUl = ({challenges, usergameChallenge, indexOfCurrentChallenge, se
     return (
         <>
             {challenges.length > 0 ?
-                <ul id="challenge_list">
+            <div id="challenge_list">
+                <ul>
                     {usergameChallenge.map((challenge, index) => {
                         return (
                             <ChallengeLi
@@ -22,10 +23,11 @@ const ChallengeUl = ({challenges, usergameChallenge, indexOfCurrentChallenge, se
                         )
                     })}
                 </ul>
+            </div>
                 : <p>...Loading...</p>
             }
             {showChallenge !== 0 && <ChallengeShow id={showChallenge} setShowChallenge={setShowChallenge} />}
-            <RestartGame />
+            <div id="actions"><RestartGame /></div>
         </>
     )
 };
