@@ -12,15 +12,12 @@ import './game.css';
 const GameZone = ({ playerName }) => {
     const [game, setGame] = useState(0);
     const [player, setPlayer] = useState(0);
-
     const [challenges, setChallenges] = useState([]);
     const [usergameChallenge, setUsergameChallenge] = useState([]);
     const [currentChallenge, setCurrentChallenge] = useState({});
     const [indexOfCurrentChallenge, setIndexOfCurrentChallenge] = useState(0);
-
     const [showChallenge, setShowChallenge] = useState(0);
-    const [gameIsWin, setGameIsWin] = useState(false);
-    const [gameOver, setGameOver] = useState(false);
+    const [gameIsFinished, setGameIsFinished] = useState(false);
 
     useEffect(() => {
         const gameId = localStorage.getItem('gameId');
@@ -28,8 +25,8 @@ const GameZone = ({ playerName }) => {
         if (gameId !== 'undefined' && playerId !== 'undefined') {
             setGame(gameId);
             setPlayer(playerId);
-        } else return;
-    }, []);
+        } 
+    }, [showChallenge]);
 
     useEffect(() => {
         getChallenges();
@@ -37,11 +34,15 @@ const GameZone = ({ playerName }) => {
     }, [game, player, showChallenge]);
 
     useEffect(() => {
-        getCurrentChallenge();
+        if (usergameChallenge.filter(challenge => challenge.is_accomplished === 1).length < 5) {
+            getCurrentChallenge();
+        }
     }, [usergameChallenge, showChallenge]);
 
     useEffect(() => {
-        getIndexOfCurrentChallenge();
+        if (usergameChallenge.filter(challenge => challenge.is_accomplished === 1).length < 5) {
+            getIndexOfCurrentChallenge();
+        }
     }, [currentChallenge, showChallenge]);
 
     const getChallenges = async () => {
@@ -73,19 +74,20 @@ const GameZone = ({ playerName }) => {
         if (minutes !== 'undefined' && secondes !== 'undefined') {
             if (minutes > 0 || secondes > 0) {
                 finishGame(game);
-                setGameIsWin(true);
+                localStorage.setItem('gameOver', JSON.stringify(false));
+            } else {
+                finishGame(game);
+                localStorage.setItem('gameOver', JSON.stringify(true));
             }
+            localStorage.setItem('gameIsFinished', JSON.stringify(true));
         }
-        if (minutes === 0 && secondes === 0) {
-            finishGame(game);
-            setGameOver(true);
-        }
+        setGameIsFinished(true);
     };
 
     return (
         <section id="game_zone">
-            {gameIsWin || gameOver ?
-                <GameEnd gameIsWin={gameIsWin} game={game} />
+            { gameIsFinished ?
+                <GameEnd game={game} />
                 :
                 <div id="game_zone_on">
                     <Header playerName={playerName} player={player} game={game} />
@@ -96,7 +98,6 @@ const GameZone = ({ playerName }) => {
                         setShowChallenge={setShowChallenge}
                         showChallenge={showChallenge} />
                 </div>
-
             }
         </section>
     );

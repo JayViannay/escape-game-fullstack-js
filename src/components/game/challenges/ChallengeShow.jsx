@@ -49,8 +49,8 @@ const ChallengeShow = ({ id, setShowChallenge }) => {
                     document.getElementById('result').classList.add('txt-green');
                     setTimeout(() => {
                         setShowChallenge(0);
-                    }, 2000);
-                }, 14000);
+                    }, 1000);
+                }, 1000);
             }
         }
     };

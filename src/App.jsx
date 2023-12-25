@@ -27,9 +27,10 @@ const App = () => {
   const tabSound = new Audio(tabEffect);
   const enterSound = new Audio(enterEffect);
   const keySound = new Audio(keyEffect);
-
+  
   useEffect(() => {
     const playerIsSet = JSON.parse(localStorage.getItem('playerName'));
+    const isStarted = JSON.parse(localStorage.getItem('gameIsStarted'));
     if (playerIsSet !== null) {
       setPlayerName(playerIsSet);
       setEnterIsPressed(true);
@@ -42,7 +43,10 @@ const App = () => {
         setGameId(gameId);
       }
     }
-  }, [playerName]);
+    if (isStarted === true) {
+      setGameIsStarted(true);
+    }
+  }, [playerName, gameIsStarted]);
 
   useEffect(() => {
     getIPClient();
