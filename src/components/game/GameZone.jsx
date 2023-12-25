@@ -52,33 +52,32 @@ const GameZone = ({ playerName }) => {
     const getUsergameChallenges = async (game, player) => {
         const usergameChallenge = await getUsergameChallenge(game, player);
         setUsergameChallenge(usergameChallenge);
+        if (usergameChallenge.filter(challenge => challenge.is_accomplished === 1).length === 5) {
+            handleFinishGame();
+        }
     };
 
     const getCurrentChallenge = () => {
         const currentChallenge = usergameChallenge.filter(challenge => challenge.is_accomplished === 0)[0];
-        if (currentChallenge) {
-            setCurrentChallenge(currentChallenge);
-        } else handleFinishGame();
+        setCurrentChallenge(currentChallenge);
     };
 
     const getIndexOfCurrentChallenge = () => {
         const indexOfCurrentChallenge = challenges.findIndex(challenge => challenge.id === currentChallenge.challenge_id);
-        if (indexOfCurrentChallenge) {
-            setIndexOfCurrentChallenge(indexOfCurrentChallenge);
-        }
+        setIndexOfCurrentChallenge(indexOfCurrentChallenge);
     };
 
     const handleFinishGame = () => {
-        const isGameFinished = usergameChallenge.filter(challenge => challenge.is_accomplished === 1).length === 5;
         const minutes = localStorage.getItem('minutes');
         const secondes = localStorage.getItem('secondes');
-        if (isGameFinished && minutes !== 'undefined' && secondes !== 'undefined') {
+        if (minutes !== 'undefined' && secondes !== 'undefined') {
             if (minutes > 0 || secondes > 0) {
                 finishGame(game);
-                setGameIsWin(isGameFinished);
+                setGameIsWin(true);
             }
         }
         if (minutes === 0 && secondes === 0) {
+            finishGame(game);
             setGameOver(true);
         }
     };
