@@ -9,6 +9,15 @@ const findAll = () => {
     });
 };
 
+const find = (id) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM challenge WHERE id = ?', id, (err, result) => {
+            if (err) reject(err);
+            else resolve(result[0]);
+        });
+    });
+};
+
 const createUserGameChallenge = (userGameChallenge) => {
     const { userId, gameId, challengeId } = userGameChallenge;
     return new Promise((resolve, reject) => {
@@ -45,4 +54,4 @@ const updateUserGameChallenge = (userGameChallenge) => {
     });
 };
 
-export default { findAll, createUserGameChallenge, findUserGameChallenges, updateUserGameChallenge };
+export default { find, findAll, createUserGameChallenge, findUserGameChallenges, updateUserGameChallenge };
